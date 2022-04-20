@@ -10,3 +10,21 @@
         height: 90vh;
     }
 }
+
+.start-label-box {
+    position: absolute;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    bottom: 250px;
+    img {
+        width: 25vw;
+        height: auto;
+        transition: all 225ms ease-in-out;
+        &:hover {
+            cursor: pointer;
+            filter: brightness(1.2);
+        }
+    }
+}
