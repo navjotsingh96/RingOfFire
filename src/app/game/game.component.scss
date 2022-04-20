@@ -26,5 +26,21 @@
 
 .pick-card {
     transition: all 125ms ease-in-out;
-    transform: scale(2) !important;
+    transform: scale(1.25) translateX(180px) translateY(-180px) rotate(-30deg);
+    animation: pick-card-animation 1.2s ease-in-out;
+}
+
+@keyframes pick-card-animation {
+    0% {
+        transform: scale(1.1);
+    }
+    /*   30% {
+        transform: scale(1.1);
+    }
+    60% {
+        transform: scale(1.25);
+    } */
+    100% {
+        transform: scale(1.25) translateX(180px) translateY(-180px) rotate(-30deg);
+    }
 }

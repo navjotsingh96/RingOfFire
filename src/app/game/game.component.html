@@ -4,6 +4,7 @@
     <div class="card-stack">
         <!--   ngfor ist die Vorschleife wie in JSm             ngStyle nutzt man die CSS eigensaft festzulegen-->
         <img *ngFor="let c of [0, 1, 2, 3, 4]; let i = index;" [ngStyle]="{'right.px': i * 5}" src="assets/img/cards/card_cover.png" alt="">
-        <img (click)="takeCard()" [class.pick-card]="pickCardAnimtation" class="top-card" style="right: 25px;" src="assets/img/cards/card_cover.png" alt="">
+        <img (click)="takeCard()" class="top-card" style="right: 25px;" src="assets/img/cards/card_cover.png" alt="">
+        <img (click)="takeCard()" *ngIf="pickCardAnimtation" class="pick-card" style="right: 25px;" src="assets/img/cards/spade_1.png" alt="">
     </div>
 </div>
