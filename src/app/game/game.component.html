@@ -1,1 +1,8 @@
-<p>game works!</p>
+<div class="game-field">
+
+
+    <div class="card-stack">
+        <!--   ngfor ist die Vorschleife wie in JSm             ngStyle nutzt man die CSS eigensaft festzulegen-->
+        <img *ngFor="let c of [0, 1, 2, 3, 4]; let i = index;" [ngStyle]="{'right.px': i * 5}" src="assets/img/cards/card_cover.png" alt="">
+    </div>
+</div>
