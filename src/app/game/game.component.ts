@@ -9,10 +9,12 @@ import Game from '../module/game';
 export class GameComponent implements OnInit {
   pickCardAnimtation = false;
   game: Game | undefined;
+  currentCard: string = '';
+
   constructor() { }
 
   ngOnInit(): void {
- this.newGame();
+    this.newGame();
   }
 
   newGame() {
@@ -20,6 +22,18 @@ export class GameComponent implements OnInit {
     console.log(this.game);
   }
   takeCard() {
-    this.pickCardAnimtation = true;
+    if (!this.pickCardAnimtation) {
+
+      //pop() show and delete last value from Array 
+      this.currentCard = this.game.stack.pop();
+      this.pickCardAnimtation = true;
+      console.log(this.currentCard);
+
+
+    }
+    setTimeout(() => {
+      this.pickCardAnimtation = false;
+
+    }, 1500);
   }
 }

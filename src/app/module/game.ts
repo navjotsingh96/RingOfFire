@@ -7,9 +7,9 @@ export default class Game {
     constructor() {
         for (let i = 1; i < 14; i++) {
             this.stack.push('spade_' + i);
-            this.stack.push('clubs' + i);
-            this.stack.push('hearts' + i);
-            this.stack.push('diamonds' + i);
+            this.stack.push('clubs_' + i);
+            this.stack.push('hearts_' + i);
+            this.stack.push('diamonds_' + i);
         }
         shuffle(this.stack);
     }
@@ -35,3 +35,5 @@ function shuffle(array) {
 
     return array;
 }
+
+//error TS7006: Parameter 'array' implicitly has an 'any' type. then strict mode should be on false and noima.. false too.
