@@ -2,9 +2,15 @@
 
 
     <div class="card-stack">
-        <!--   ngfor ist die Vorschleife wie in JSm             ngStyle nutzt man die CSS eigensaft festzulegen-->
+        <!--   ngfor ist die Vorschleife wie in JSm   stack of back cards   ngStyle nutzt man die CSS eigensaft festzulegen-->
         <img *ngFor="let c of [0, 1, 2, 3, 4]; let i = index;" [ngStyle]="{'right.px': i * 5}" src="/assets/img/cards/card_cover.png" alt="">
+
         <img (click)="takeCard()" class="top-card" style="right: 25px;" src="/assets/img/cards/card_cover.png" alt="">
+
+        <!--Stack of played cards-->
+        <img class="played-card" *ngFor="let card of game.playedCard" src="/assets/img/cards/{{ card }}.png">
+
+        <!--current card animation-->
         <img (click)="takeCard()" *ngIf="pickCardAnimtation" class="pick-card" style="right: 25px;" src="/assets/img/cards/{{ currentCard }}.png" alt="">
 
     </div>
