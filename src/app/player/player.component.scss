@@ -2,18 +2,26 @@
     width: 300px;
     display: flex;
     align-items: center;
-    background-color: rgb(255, 198, 92);
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
+    background-color: rgba(176, 176, 176, 0.748);
     img {
         padding: 10px;
-        height: 100px;
-        width: 100px;
+        height: 70px;
+        width: 70px;
         object-fit: cover;
         border-radius: 100%;
     }
     span {
         font-size: 32px;
         margin-left: 15px;
+    }
+}
+
+.player-active {
+    background-color: rgb(255, 198, 92);
+    img {
+        height: 100px;
+        width: 100px;
     }
 }
