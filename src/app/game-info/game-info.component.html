@@ -1,10 +1,11 @@
 <mat-card>
     <mat-card-title>
-        {{ title }}
+        <!--card ? title ist eine If statement. wenn bei Card der Title leer ist dann : 'was hier steht'-->
+        {{ card ? title : 'Please add your Names' }}
     </mat-card-title>
 
     <mat-card-content>
-        {{ description }}
+        {{ card ? description : 'Please pick the Card to start game' }}
     </mat-card-content>
 
 </mat-card>

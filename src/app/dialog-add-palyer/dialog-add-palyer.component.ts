@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dialog-add-palyer',
@@ -8,11 +8,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 })
 export class DialogAddPalyerComponent implements OnInit {
   name: string = '';
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<DialogAddPalyerComponent>) { }
 
   ngOnInit(): void {
   }
-  onNoClick() {
-
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }
