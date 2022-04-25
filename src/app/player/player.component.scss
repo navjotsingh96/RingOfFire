@@ -5,6 +5,7 @@
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
     background-color: rgba(176, 176, 176, 0.748);
+    transition: all 225ms ease-in-out;
     img {
         padding: 10px;
         height: 70px;
@@ -20,6 +21,7 @@
 
 .player-active {
     background-color: rgb(255, 198, 92);
+    transition: all 225ms ease-in-out;
     img {
         height: 100px;
         width: 100px;

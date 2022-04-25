@@ -28,10 +28,8 @@ export class GameComponent implements OnInit {
       //pop() show and delete last value from Array 
       this.currentCard = this.game.stack.pop();
       this.pickCardAnimtation = true;
-      console.log(this.currentCard);
-      console.log(this.game);
-
-
+      this.game.currentPlayer++;
+      this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
 
     }
     setTimeout(() => {
@@ -47,7 +45,7 @@ export class GameComponent implements OnInit {
 
     });
     dialogRef.afterClosed().subscribe((name: string) => {
-     this.game.players.push(name);
+      this.game.players.push(name);
 
     });
   }
