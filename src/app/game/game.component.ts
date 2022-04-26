@@ -15,7 +15,7 @@ export class GameComponent implements OnInit {
   pickCardAnimtation = false;
   game: Game | undefined;
   currentCard: string = '';
-  game$;
+
   gameId: string;
 
 
@@ -41,6 +41,7 @@ export class GameComponent implements OnInit {
           this.game.playedCard = game.playedCard;
           this.game.players = game.players;
           this.game.stack = game.stack;
+      
 
         });
     });
@@ -50,11 +51,7 @@ export class GameComponent implements OnInit {
 
   newGame() {
     this.game = new Game();
-  /*   this
-    .firestore
-    .collection('games')
-    .add(this.game.ConvertToJson()); */
-
+  
 
   }
   takeCard() {
@@ -66,13 +63,14 @@ export class GameComponent implements OnInit {
       console.log('Game is', this.game);
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
-   
+      this.saveGame();
+      
 
     }
     setTimeout(() => {
       this.game.playedCard.push(this.currentCard);
-
       this.pickCardAnimtation = false;
+      this.saveGame();
 
     }, 1000);
   }
@@ -84,14 +82,17 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.saveGame();
       }
     });
   }
+
+  // to save the game data 
   saveGame() {
     this
       .firestore
       .collection('games')
       .doc(this.gameId)
-      .update(this.game.ConvertToJson);
+      .update(this.game.ConvertToJson());
   }
 }
