@@ -15,6 +15,7 @@ export class GameComponent implements OnInit {
 
   game: Game | undefined;
   gameId: string;
+  play;
 
 
   constructor(private route: ActivatedRoute, private firestore: AngularFirestore,
@@ -32,8 +33,11 @@ export class GameComponent implements OnInit {
         .doc(this.gameId)
         .valueChanges()
         .subscribe((game: any) => {
-          console.log('game update', game);
-
+       /*    console.log('game update', game['players'].length -1 );
+          this.play= game['players'];
+          console.log(this.play.slice(-1)[0]);
+          alert(this.play.slice(-1)[0] + ' had joined game'); */
+          
           this.game.currentPlayer = game.currentPlayer;
           this.game.playedCard = game.playedCard;
           this.game.players = game.players;
