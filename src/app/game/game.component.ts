@@ -45,7 +45,7 @@ export class GameComponent implements OnInit {
 
     // setDoc to setdocument in der documnet von collection dann was wir hochladen wollen
 
-    setDoc(doc(coll), { 'HALLO': 'Welt' })
+    setDoc(doc(coll), this.game.ConvertToJson());
   }
 
   newGame() {

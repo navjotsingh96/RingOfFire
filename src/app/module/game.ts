@@ -14,6 +14,16 @@ export default class Game {
         shuffle(this.stack);
     }
 
+    
+    public ConvertToJson(){
+        return {
+         players: this.players,
+         playedCard: this.playedCard,
+         stack: this.stack,
+         currentPlayer: this.currentPlayer
+        }
+    }
+
 }
 
 // to shuffel or mix the (Array)cards 
