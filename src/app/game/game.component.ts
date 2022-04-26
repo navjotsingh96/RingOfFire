@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import Game from '../module/game';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogAddPalyerComponent } from '../dialog-add-palyer/dialog-add-palyer.component';
+import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-game',
@@ -12,11 +15,27 @@ export class GameComponent implements OnInit {
   pickCardAnimtation = false;
   game: Game | undefined;
   currentCard: string = '';
+  game$;
 
-  constructor(public dialog: MatDialog) { }
+
+  constructor(private firestore: Firestore, public dialog: MatDialog) {
+
+    const coll = collection(firestore, 'games');
+    this.game$ = collectionData(coll);
+    this.game$.subscribe((game) => {
+    
+      console.log('new from Firebase', game);
+
+    });
+  }
 
   ngOnInit(): void {
     this.newGame();
+
+    /*  this.firestore.collection('games').valueChanges().subscribe((game) => {
+       console.log('new from Firebase', game)
+     });
+      */
   }
 
   newGame() {
@@ -45,8 +64,8 @@ export class GameComponent implements OnInit {
 
     });
     dialogRef.afterClosed().subscribe((name: string) => {
-      if(name && name.length > 0){
-      this.game.players.push(name);
+      if (name && name.length > 0) {
+        this.game.players.push(name);
       }
     });
   }
