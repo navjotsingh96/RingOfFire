@@ -12,10 +12,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  pickCardAnimtation = false;
-  game: Game | undefined;
-  currentCard: string = '';
 
+  game: Game | undefined;
   gameId: string;
 
 
@@ -27,7 +25,6 @@ export class GameComponent implements OnInit {
     this.route.params.subscribe((params) => {
       console.log(params['id']);
       this.gameId = params['id'];
-
 
       this
         .firestore
@@ -41,6 +38,8 @@ export class GameComponent implements OnInit {
           this.game.playedCard = game.playedCard;
           this.game.players = game.players;
           this.game.stack = game.stack;
+          this.game.currentCard = game.currentCard;
+          this.game.pickCardAnimtation = game.pickCardAnimtation;
       
 
         });
@@ -55,11 +54,11 @@ export class GameComponent implements OnInit {
 
   }
   takeCard() {
-    if (!this.pickCardAnimtation) {
+    if (!this.game.pickCardAnimtation) {
 
       //pop() show and delete last value from Array 
-      this.currentCard = this.game.stack.pop();
-      this.pickCardAnimtation = true;
+      this.game.currentCard = this.game.stack.pop();
+      this.game.pickCardAnimtation = true;
       console.log('Game is', this.game);
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
@@ -68,8 +67,8 @@ export class GameComponent implements OnInit {
 
     }
     setTimeout(() => {
-      this.game.playedCard.push(this.currentCard);
-      this.pickCardAnimtation = false;
+      this.game.playedCard.push(this.game.currentCard);
+      this.game.pickCardAnimtation = false;
       this.saveGame();
 
     }, 1000);
