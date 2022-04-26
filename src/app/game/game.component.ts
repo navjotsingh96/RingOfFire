@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import Game from '../module/game';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogAddPalyerComponent } from '../dialog-add-palyer/dialog-add-palyer.component';
-import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import { Firestore, collectionData } from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs/internal/Observable';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, collection} from 'firebase/firestore';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -19,24 +20,43 @@ export class GameComponent implements OnInit {
   game$;
 
 
-  constructor(private firestore: Firestore, public dialog: MatDialog) {
+  constructor(private route: ActivatedRoute, private firestore: Firestore, public dialog: MatDialog) {
     // mit coll griefen wir collection games in firestone an. ('games') ist der name der Collection in Firebase
     const coll = collection(firestore, 'games');
 
+
     // mit collectiondata greifen wir was den erstellete document von den collection(coll) an.
     this.game$ = collectionData(coll);
-
+   
     // mit subscribe werden die Daten sofort angezeigt, wenn iregenwas in firebase updated oder geändert wurde.
     this.game$.subscribe((game) => {
 
-      console.log('new from Firebase', game);
+     console.log('new from Firebase', game);
 
     });
   }
 
   ngOnInit(): void {
     this.newGame();
-    this.updateToFirebase();
+
+    this.route.params.subscribe((params) => {
+      console.log(params['id']);
+   /*    this.firestore.collection('games')
+.doc(params['id'])
+.valueChanges().subscribe((game) => {
+
+      console.log('Game', game);
+ 
+     }); */
+     
+    const coll = collection(this.firestore, 'games');
+    this.game$ = collectionData(coll , params['id']);
+    this.game$.subscribe((game) => {
+
+      console.log('Game', game);
+ 
+     });
+  });
   }
 
   updateToFirebase() {
@@ -50,6 +70,8 @@ export class GameComponent implements OnInit {
 
   newGame() {
     this.game = new Game();
+    //this.updateToFirebase();
+
   }
   takeCard() {
     if (!this.pickCardAnimtation) {
