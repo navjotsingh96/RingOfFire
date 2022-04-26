@@ -5,6 +5,7 @@ import { DialogAddPalyerComponent } from '../dialog-add-palyer/dialog-add-palyer
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs/internal/Observable';
+import { doc, setDoc } from 'firebase/firestore';
 
 @Component({
   selector: 'app-game',
@@ -19,11 +20,15 @@ export class GameComponent implements OnInit {
 
 
   constructor(private firestore: Firestore, public dialog: MatDialog) {
-
+    // mit coll griefen wir collection games in firestone an. ('games') ist der name der Collection in Firebase
     const coll = collection(firestore, 'games');
+
+    // mit collectiondata greifen wir was den erstellete document von den collection(coll) an.
     this.game$ = collectionData(coll);
+
+    // mit subscribe werden die Daten sofort angezeigt, wenn iregenwas in firebase updated oder geändert wurde.
     this.game$.subscribe((game) => {
-    
+
       console.log('new from Firebase', game);
 
     });
@@ -31,11 +36,16 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.newGame();
+    this.updateToFirebase();
+  }
 
-    /*  this.firestore.collection('games').valueChanges().subscribe((game) => {
-       console.log('new from Firebase', game)
-     });
-      */
+  updateToFirebase() {
+    // mit coll griefen wir collection games in firestone an. ('games') ist der name der Collection in Firebase
+    const coll = collection(this.firestore, 'games');
+
+    // setDoc to setdocument in der documnet von collection dann was wir hochladen wollen
+
+    setDoc(doc(coll), { 'HALLO': 'Welt' })
   }
 
   newGame() {
