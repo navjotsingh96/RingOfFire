@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import Game from '../module/game';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPalyerComponent } from '../dialog-add-palyer/dialog-add-palyer.component';
-import { Firestore, collectionData } from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs/internal/Observable';
-import { doc, setDoc, collection} from 'firebase/firestore';
 import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-game',
@@ -18,59 +16,45 @@ export class GameComponent implements OnInit {
   game: Game | undefined;
   currentCard: string = '';
   game$;
+  gameId: string;
 
 
-  constructor(private route: ActivatedRoute, private firestore: Firestore, public dialog: MatDialog) {
-    // mit coll griefen wir collection games in firestone an. ('games') ist der name der Collection in Firebase
-    const coll = collection(firestore, 'games');
-
-
-    // mit collectiondata greifen wir was den erstellete document von den collection(coll) an.
-    this.game$ = collectionData(coll);
-   
-    // mit subscribe werden die Daten sofort angezeigt, wenn iregenwas in firebase updated oder geändert wurde.
-    this.game$.subscribe((game) => {
-
-     console.log('new from Firebase', game);
-
-    });
-  }
+  constructor(private route: ActivatedRoute, private firestore: AngularFirestore,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.newGame();
-
     this.route.params.subscribe((params) => {
       console.log(params['id']);
-   /*    this.firestore.collection('games')
-.doc(params['id'])
-.valueChanges().subscribe((game) => {
+      this.gameId = params['id'];
 
-      console.log('Game', game);
- 
-     }); */
-     
-    const coll = collection(this.firestore, 'games');
-    this.game$ = collectionData(coll , params['id']);
-    this.game$.subscribe((game) => {
 
-      console.log('Game', game);
- 
-     });
-  });
-  }
+      this
+        .firestore
+        .collection('games')
+        .doc(this.gameId)
+        .valueChanges()
+        .subscribe((game: any) => {
+          console.log('game update', game);
 
-  updateToFirebase() {
-    // mit coll griefen wir collection games in firestone an. ('games') ist der name der Collection in Firebase
-    const coll = collection(this.firestore, 'games');
+          this.game.currentPlayer = game.currentPlayer;
+          this.game.playedCard = game.playedCard;
+          this.game.players = game.players;
+          this.game.stack = game.stack;
 
-    // setDoc to setdocument in der documnet von collection dann was wir hochladen wollen
+        });
+    });
 
-    setDoc(doc(coll), this.game.ConvertToJson());
+
   }
 
   newGame() {
     this.game = new Game();
-    //this.updateToFirebase();
+  /*   this
+    .firestore
+    .collection('games')
+    .add(this.game.ConvertToJson()); */
+
 
   }
   takeCard() {
@@ -79,8 +63,10 @@ export class GameComponent implements OnInit {
       //pop() show and delete last value from Array 
       this.currentCard = this.game.stack.pop();
       this.pickCardAnimtation = true;
+      console.log('Game is', this.game);
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
+   
 
     }
     setTimeout(() => {
@@ -100,5 +86,12 @@ export class GameComponent implements OnInit {
         this.game.players.push(name);
       }
     });
+  }
+  saveGame() {
+    this
+      .firestore
+      .collection('games')
+      .doc(this.gameId)
+      .update(this.game.ConvertToJson);
   }
 }
