@@ -6,8 +6,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    @media(max-width: 1250px) {
+        overflow: hidden;
+    }
     img {
         height: 90vh;
+        @media(max-width: 1250px) {
+            width: 90vw;
+            object-fit: contain;
+        }
     }
 }
 
@@ -18,10 +25,25 @@
     display: flex;
     justify-content: center;
     bottom: 250px;
+    @media(max-width: 920px) {
+        bottom: 400px;
+    }
+    @media (max-height: 700px) {
+        bottom: 230px;
+    }
+    @media (max-width: 400px) {
+        bottom: 480px;
+    }
     img {
         width: 25vw;
         height: auto;
         transition: all 225ms ease-in-out;
+        @media(max-width: 1250px) {
+            width: 400px;
+        }
+        @media(max-width: 620px) {
+            width: 200px;
+        }
         &:hover {
             cursor: pointer;
             filter: brightness(1.2);

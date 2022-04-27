@@ -27,12 +27,28 @@
 .played-card {
     transform: scale(1.25) translateX(180px) translateY(-180px) rotate(-30deg);
     right: 25px;
+    @media(max-width: 720px) {
+        transform: scale(1.25) translateX(120px) translateY(-180px) rotate(-30deg);
+    }
 }
 
 .pick-card {
     transition: all 125ms ease-in-out;
     transform: scale(1.25) translateX(180px) translateY(-180px) rotate(-30deg);
     animation: pick-card-animation 1s ease-in-out;
+    @media(max-width: 720px) {
+        transform: scale(1.25) translateX(120px) translateY(-180px) rotate(-30deg);
+        animation: pick-card-animation-mobile 1s ease-in-out;
+    }
+}
+
+@keyframes pick-card-animation-mobile {
+    0% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1.25) translateX(120px) translateY(-180px) rotate(-30deg);
+    }
 }
 
 @keyframes pick-card-animation {
@@ -62,4 +78,22 @@
     left: 100px;
     right: 100px;
     text-align: center;
+    @media(max-width: 720px) {
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+}
+
+.scroll-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    app-player-mobile {
+        margin-left: 8px;
+    }
 }
