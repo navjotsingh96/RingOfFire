@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPalyerComponent } from '../dialog-add-palyer/dialog-add-palyer.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRoute } from '@angular/router';
+import { EditPlayerComponent } from '../edit-player/edit-player.component';
 
 
 @Component({
@@ -41,6 +42,7 @@ export class GameComponent implements OnInit {
           this.game.currentPlayer = game.currentPlayer;
           this.game.playedCard = game.playedCard;
           this.game.players = game.players;
+          this.game.player_images = game.player_images;
           this.game.stack = game.stack;
           this.game.currentCard = game.currentCard;
           this.game.pickCardAnimtation = game.pickCardAnimtation;
@@ -79,12 +81,11 @@ export class GameComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogAddPalyerComponent, {
-
-    });
+    const dialogRef = this.dialog.open(DialogAddPalyerComponent);
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.game.player_images.push('1.webp');
         this.saveGame();
       }
     });
@@ -97,5 +98,16 @@ export class GameComponent implements OnInit {
       .collection('games')
       .doc(this.gameId)
       .update(this.game.ConvertToJson());
+  }
+
+  editPlayer(Playerid: number){
+    console.log('edit Player',Playerid);
+    const dialogRef = this.dialog.open(EditPlayerComponent);
+    dialogRef.afterClosed().subscribe((change: string) =>{
+      console.log('Recived Change', change);
+      this.game.player_images[Playerid] = change;
+      this.saveGame();
+      
+    });
   }
 }
