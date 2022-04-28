@@ -105,3 +105,14 @@ app-player-mobile {
         filter: brightness(1.1);
     }
 }
+
+.game-over {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    img {
+        height: 500px;
+        width: 500px;
+    }
+}

@@ -17,6 +17,7 @@ export class GameComponent implements OnInit {
   game: Game | undefined;
   gameId: string;
   play;
+  gameOver =true ;
 
 
   constructor(private route: ActivatedRoute, private firestore: AngularFirestore,
@@ -34,11 +35,11 @@ export class GameComponent implements OnInit {
         .doc(this.gameId)
         .valueChanges()
         .subscribe((game: any) => {
-       /*    console.log('game update', game['players'].length -1 );
-          this.play= game['players'];
-          console.log(this.play.slice(-1)[0]);
-          alert(this.play.slice(-1)[0] + ' had joined game'); */
-          
+          /*    console.log('game update', game['players'].length -1 );
+             this.play= game['players'];
+             console.log(this.play.slice(-1)[0]);
+             alert(this.play.slice(-1)[0] + ' had joined game'); */
+
           this.game.currentPlayer = game.currentPlayer;
           this.game.playedCard = game.playedCard;
           this.game.players = game.players;
@@ -46,7 +47,7 @@ export class GameComponent implements OnInit {
           this.game.stack = game.stack;
           this.game.currentCard = game.currentCard;
           this.game.pickCardAnimtation = game.pickCardAnimtation;
-      
+
 
         });
     });
@@ -56,12 +57,14 @@ export class GameComponent implements OnInit {
 
   newGame() {
     this.game = new Game();
-  
+
 
   }
   takeCard() {
-    if (!this.game.pickCardAnimtation) {
-
+    if (this.game.stack.length == 0) {
+      this.gameOver =true;
+    } else if (!this.game.pickCardAnimtation) {
+     
       //pop() show and delete last value from Array 
       this.game.currentCard = this.game.stack.pop();
       this.game.pickCardAnimtation = true;
@@ -69,7 +72,7 @@ export class GameComponent implements OnInit {
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
       this.saveGame();
-      
+
 
     }
     setTimeout(() => {
@@ -100,14 +103,21 @@ export class GameComponent implements OnInit {
       .update(this.game.ConvertToJson());
   }
 
-  editPlayer(Playerid: number){
-    console.log('edit Player',Playerid);
+  editPlayer(Playerid: number) {
+    console.log('edit Player', Playerid);
     const dialogRef = this.dialog.open(EditPlayerComponent);
-    dialogRef.afterClosed().subscribe((change: string) =>{
-      console.log('Recived Change', change);
-      this.game.player_images[Playerid] = change;
+    dialogRef.afterClosed().subscribe((change: string) => {
+      if (change) {
+        if (change == 'DELETE') {
+          this.game.players.splice(Playerid, 1);
+          this.game.player_images.splice(Playerid, 1);
+        } else {
+          console.log('Recived Change', change);
+          this.game.player_images[Playerid] = change;
+        }
+
+      }
       this.saveGame();
-      
     });
   }
 }
