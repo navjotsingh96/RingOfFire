@@ -21,11 +21,12 @@ import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
-
+import {ClipboardModule} from '@angular/cdk/clipboard';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
 import { PlayerMobileComponent } from './player-mobile/player-mobile.component';
 import { EditPlayerComponent } from './edit-player/edit-player.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -48,6 +49,8 @@ import { EditPlayerComponent } from './edit-player/edit-player.component';
     MatDialogModule,
     MatIconModule,
     MatCardModule,
+    ClipboardModule,
+    MatSnackBarModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase)
 

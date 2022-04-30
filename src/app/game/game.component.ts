@@ -5,6 +5,9 @@ import { DialogAddPalyerComponent } from '../dialog-add-palyer/dialog-add-palyer
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { EditPlayerComponent } from '../edit-player/edit-player.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+
 
 
 @Component({
@@ -17,15 +20,19 @@ export class GameComponent implements OnInit {
   game: Game | undefined;
   gameId: string;
   play;
-  gameOver =true ;
+  gameOver = false;
+  value = window.location.href;
 
 
   constructor(private route: ActivatedRoute, private firestore: AngularFirestore,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+
     this.newGame();
     this.route.params.subscribe((params) => {
+      console.log('Router Link', window.location.href);
+
       console.log(params['id']);
       this.gameId = params['id'];
 
@@ -62,9 +69,9 @@ export class GameComponent implements OnInit {
   }
   takeCard() {
     if (this.game.stack.length == 0) {
-      this.gameOver =true;
+      this.gameOver = true;
     } else if (!this.game.pickCardAnimtation) {
-     
+
       //pop() show and delete last value from Array 
       this.game.currentCard = this.game.stack.pop();
       this.game.pickCardAnimtation = true;
@@ -119,5 +126,13 @@ export class GameComponent implements OnInit {
       }
       this.saveGame();
     });
+  }
+  openSnackBar(msg) {
+    this._snackBar.open(msg);
+
+    setTimeout(() => {
+    this._snackBar.dismiss();
+      
+    }, 3000);
   }
 }
