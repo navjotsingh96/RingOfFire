@@ -22,20 +22,16 @@ export class GameComponent implements OnInit {
   play;
   gameOver = false;
   value = window.location.href;
+  player:boolean = false;
 
 
   constructor(private route: ActivatedRoute, private firestore: AngularFirestore,
     public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-
     this.newGame();
     this.route.params.subscribe((params) => {
-      console.log('Router Link', window.location.href);
-
-      console.log(params['id']);
       this.gameId = params['id'];
-
       this
         .firestore
         .collection('games')
@@ -64,10 +60,18 @@ export class GameComponent implements OnInit {
 
   newGame() {
     this.game = new Game();
+  }
 
-
+  checkPlayer(){
+    if(this.game.players.length < 1){
+      this.player = false;
+    } else{
+      this.player = true;
+    }
   }
   takeCard() {
+    this.checkPlayer();
+    if(this.player){
     if (this.game.stack.length == 0) {
       this.gameOver = true;
     } else if (!this.game.pickCardAnimtation) {
@@ -75,12 +79,9 @@ export class GameComponent implements OnInit {
       //pop() show and delete last value from Array 
       this.game.currentCard = this.game.stack.pop();
       this.game.pickCardAnimtation = true;
-      console.log('Game is', this.game);
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
       this.saveGame();
-
-
     }
     setTimeout(() => {
       this.game.playedCard.push(this.game.currentCard);
@@ -88,7 +89,10 @@ export class GameComponent implements OnInit {
       this.saveGame();
 
     }, 1000);
+  } else{
+    alert('Please add Player')
   }
+}
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPalyerComponent);
@@ -111,7 +115,6 @@ export class GameComponent implements OnInit {
   }
 
   editPlayer(Playerid: number) {
-    console.log('edit Player', Playerid);
     const dialogRef = this.dialog.open(EditPlayerComponent);
     dialogRef.afterClosed().subscribe((change: string) => {
       if (change) {
@@ -119,7 +122,6 @@ export class GameComponent implements OnInit {
           this.game.players.splice(Playerid, 1);
           this.game.player_images.splice(Playerid, 1);
         } else {
-          console.log('Recived Change', change);
           this.game.player_images[Playerid] = change;
         }
 
